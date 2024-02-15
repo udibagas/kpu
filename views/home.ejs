@@ -10,6 +10,13 @@
     <table border="1">
       <tbody>
         <tr>
+          <td>Jumlah TPS</td>
+          <td>
+            <%= format(jumlah_tps_with_data) %> dari <%= format(jumlah_tps) %>
+            (<%= format(persentase_tps) %>%)
+          </td>
+        </tr>
+        <tr>
           <td>Suara Total</td>
           <td><%= format(suara_total) %></td>
         </tr>
@@ -23,12 +30,54 @@
         </tr>
         <tr>
           <td>Selisih</td>
-          <td><%= format(selisih) %></td>
+          <td>
+            <%= format(selisih) %> (Jika minus maka terjadi penambahan suara)
+          </td>
         </tr>
         <tr>
           <td>Jumlah TPS dengan data Invalid</td>
-          <td><%= format(invalid) %></td>
+          <td><%= format(invalid.length) %></td>
         </tr>
+      </tbody>
+    </table>
+
+    <h2>TPS Dengan Data Invalid</h2>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Propinsi</th>
+          <th>Kota</th>
+          <th>Kecamatan</th>
+          <th>Desa</th>
+          <th>Nama TPS</th>
+          <th>Kode TPS</th>
+          <th>Suara Total</th>
+          <th>Suara Sah</th>
+          <th>Suara Tidak Sah</th>
+          <th>Selisih</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% invalid.forEach((el, i) => { %>
+        <tr>
+          <td><%= ++i %></td>
+          <td><%= el.propinsi %></td>
+          <td><%= el.kota %></td>
+          <td><%= el.kecamatan %></td>
+          <td><%= el.desa %></td>
+          <td><%= el.nama %></td>
+          <td>
+            <a href="<%= el.url %>" target="_blank"><%= el.kode %></a>
+          </td>
+          <td><%= format(el.suara_total) %></td>
+          <td><%= format(el.suara_sah) %></td>
+          <td><%= format(el.suara_tidak_sah) %></td>
+          <td><%= format(el.selisih) %></td>
+        </tr>
+        <% }) %>
       </tbody>
     </table>
   </body>
