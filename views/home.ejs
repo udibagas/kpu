@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pemilu</title>
+  </head>
+  <body>
+    <h1>Summary</h1>
+    <table border="1">
+      <tbody>
+        <tr>
+          <td>Suara Total</td>
+          <td><%= format(suara_total) %></td>
+        </tr>
+        <tr>
+          <td>Suara Sah</td>
+          <td><%= format(suara_sah) %></td>
+        </tr>
+        <tr>
+          <td>Suara Tidak Sah</td>
+          <td><%= format(suara_tidak_sah) %></td>
+        </tr>
+        <tr>
+          <td>Selisih</td>
+          <td><%= format(selisih) %></td>
+        </tr>
+        <tr>
+          <td>Jumlah TPS dengan data Invalid</td>
+          <td><%= format(invalid) %></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
