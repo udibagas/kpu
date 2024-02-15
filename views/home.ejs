@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
-    <h1>Summary</h1>
+    <%- include('_nav') %>
+
+    <h2>Summary</h2>
     <table border="1">
       <tbody>
         <tr>
@@ -69,6 +71,33 @@
       </tbody>
     </table>
 
+    <h2>Perolehan Suara Palson (Clean)</h2>
+
+    <% const totalSuaraClean = votesClean.reduce((prev, curr) =>
+    Number(curr.vote) + prev, 0) %>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Paslon</th>
+          <th>Suara</th>
+          <th>%</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% votesClean.forEach(({number, name, vote}) => { %> <% const percentage
+        = (Number(vote) / totalSuaraClean * 100).toPrecision(4) %>
+        <tr>
+          <td><%= number %></td>
+          <td><%= name %></td>
+          <td><%= format(vote) %></td>
+          <td class="blue"><%= '='.repeat(percentage) %> <%= percentage %>%</td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
     <h2>TPS Dengan Data Invalid</h2>
 
     <table border="1">
@@ -107,9 +136,9 @@
           <td><%= format(el.suara_total) %></td>
           <td><%= format(el.suara_sah) %></td>
           <td><%= format(el.suara_tidak_sah) %></td>
-          <td><%= el.vote ? format(el.vote['100025']) : '' %></td>
-          <td><%= el.vote ? format(el.vote['100026']) : '' %></td>
-          <td><%= el.vote ? format(el.vote['100027']) : '' %></td>
+          <td class="green"><%= el.vote ? format(el.vote['100025']) : '' %></td>
+          <td class="blue"><%= el.vote ? format(el.vote['100026']) : '' %></td>
+          <td class="red"><%= el.vote ? format(el.vote['100027']) : '' %></td>
           <td><%= format(el.selisih) %></td>
           <td>
             <%= el.vote ? format(el.suara_sah - el.vote['100025'] -

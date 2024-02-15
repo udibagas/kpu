@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Province</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <%- include('_nav') %>
+
+    <h2>Perolehan Suara Per Provinsi</h2>
+
+    <table>
+      <tbody>
+        <% report.forEach(el => { %>
+        <tr>
+          <td rowspan="4" class="big"><%= el.provinsi %></td>
+          <td class="green">
+            <%= "=".repeat(el.paslon1Percentage) %> Anis = <%=
+            format(el.paslon1) %> (<%= el.paslon1Percentage %>%)
+          </td>
+        </tr>
+        <tr>
+          <td class="blue">
+            <%= "=".repeat(el.paslon2Percentage) %> Prabowo = <%=
+            format(el.paslon2) %> (<%= el.paslon2Percentage %>%)
+          </td>
+        </tr>
+        <tr>
+          <td class="red">
+            <%= "=".repeat(el.paslon3Percentage) %> Ganjar = <%=
+            format(el.paslon3) %> (<%= el.paslon3Percentage %>%)
+          </td>
+        </tr>
+        <tr>
+          <td>Total = <%= format(el.total) %></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </body>
+</html>

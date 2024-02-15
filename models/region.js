@@ -99,6 +99,7 @@ module.exports = (sequelize, DataTypes) => {
       status_suara: DataTypes.BOOLEAN,
       status_adm: DataTypes.BOOLEAN,
       vote: DataTypes.JSON,
+      images: DataTypes.JSON,
     },
     {
       sequelize,

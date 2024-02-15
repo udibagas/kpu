@@ -1,25 +1,30 @@
 const axios = require("axios");
 const { Region, Vote } = require("./models");
+const { Op } = require("sequelize");
 
-const getData = async () => {
-  const url = `https://sirekap-obj-data.kpu.go.id/pemilu/hhcw/ppwp`;
+const getData = async (kode) => {
   const regions = await Region.findAll({
-    where: { tingkat: 5 },
+    where: {
+      tingkat: 5,
+      kode: {
+        [Op.like]: `${kode}%`,
+      },
+      vote: null,
+    },
   });
 
   for (let i = 0; i < regions.length; i++) {
     const r = regions[i];
     console.log(`(${i + 1}/${regions.length}) TPS ${r.kode}`);
 
-    const lvl1 = r.kode.slice(0, 2);
-    const lvl2 = r.kode.slice(0, 4);
-    const lvl3 = r.kode.slice(0, 6);
-    const lvl4 = r.kode.slice(0, 10);
-    const lvl5 = r.kode;
-
-    const tps = [lvl1, lvl2, lvl3, lvl4, lvl5].join("/");
-    const { data } = await axios.get(`${url}/${tps}.json`);
-    const { status_suara, status_adm, chart: vote, administrasi } = data;
+    const { data } = await axios.get(r.url);
+    const {
+      status_suara,
+      status_adm,
+      chart: vote,
+      administrasi,
+      images,
+    } = data;
 
     if (!administrasi) {
       console.log(`Belum ada data`);
@@ -36,6 +41,7 @@ const getData = async () => {
         suara_total,
         suara_sah,
         suara_tidak_sah,
+        images,
       },
       { where: { id: r.id } }
     );
@@ -57,11 +63,16 @@ const getData = async () => {
 };
 
 (async () => {
-  // while (true) {
   try {
-    await getData();
+    const provinces = await Region.findAll({
+      where: {
+        tingkat: 1,
+      },
+    });
+    provinces.forEach((p) => {
+      getData(p.kode);
+    });
   } catch (error) {
     console.log(error.message);
   }
-  // }
 })();
