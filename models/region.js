@@ -98,6 +98,7 @@ module.exports = (sequelize, DataTypes) => {
       suara_tidak_sah: DataTypes.INTEGER,
       status_suara: DataTypes.BOOLEAN,
       status_adm: DataTypes.BOOLEAN,
+      vote: DataTypes.JSON,
     },
     {
       sequelize,

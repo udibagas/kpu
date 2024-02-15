@@ -1,6 +1,6 @@
-const { Region } = require("../models");
+const { Region, Vote, sequelize } = require("../models");
 const { format } = require("../helpers/number");
-const { Op } = require("sequelize");
+const { Op, QueryTypes } = require("sequelize");
 
 module.exports = {
   async home(req, res) {
@@ -19,8 +19,8 @@ module.exports = {
       },
     });
 
+    const votes = await Vote.report();
     const persentase_tps = (jumlah_tps_with_data / jumlah_tps) * 100;
-
     const summary = await Region.summary();
     const invalid = await Region.getInvalidData();
 
@@ -30,6 +30,7 @@ module.exports = {
       persentase_tps,
       ...summary,
       invalid,
+      votes,
       format,
     });
   },

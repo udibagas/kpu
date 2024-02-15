@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pemilu</title>
+    <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
     <h1>Summary</h1>
@@ -41,6 +42,33 @@
       </tbody>
     </table>
 
+    <h2>Perolehan Suara Palson</h2>
+
+    <% const totalSuara = votes.reduce((prev, curr) => Number(curr.vote) + prev,
+    0) %>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Paslon</th>
+          <th>Suara</th>
+          <th>%</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% votes.forEach(({number, name, vote}) => { %> <% const percentage =
+        (Number(vote) / totalSuara * 100).toPrecision(4) %>
+        <tr>
+          <td><%= number %></td>
+          <td><%= name %></td>
+          <td><%= format(vote) %></td>
+          <td class="red"><%= '='.repeat(percentage) %> <%= percentage %>%</td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
     <h2>TPS Dengan Data Invalid</h2>
 
     <table border="1">
@@ -56,7 +84,11 @@
           <th>Suara Total</th>
           <th>Suara Sah</th>
           <th>Suara Tidak Sah</th>
-          <th>Selisih</th>
+          <th>Paslon 1</th>
+          <th>Paslon 2</th>
+          <th>Paslon 3</th>
+          <th>Selisih Total Suara</th>
+          <th>Selisih Suara Sah</th>
         </tr>
       </thead>
 
@@ -75,7 +107,14 @@
           <td><%= format(el.suara_total) %></td>
           <td><%= format(el.suara_sah) %></td>
           <td><%= format(el.suara_tidak_sah) %></td>
+          <td><%= el.vote ? format(el.vote['100025']) : '' %></td>
+          <td><%= el.vote ? format(el.vote['100026']) : '' %></td>
+          <td><%= el.vote ? format(el.vote['100027']) : '' %></td>
           <td><%= format(el.selisih) %></td>
+          <td>
+            <%= el.vote ? format(el.suara_sah - el.vote['100025'] -
+            el.vote['100026'] - el.vote['100027']) : '' %>
+          </td>
         </tr>
         <% }) %>
       </tbody>
