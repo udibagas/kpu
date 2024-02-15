@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pemilu</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <%- include('_nav') %>
+
+    <h2>TPS Dengan Data Invalid (<%= format(invalid.count) %> TPS)</h2>
+
+    <p>
+      Halaman: <% for (let i = 1; i <= Math.ceil(invalid.count / 100); i++ ) {
+      %>
+      <a
+        class="pagination <%= page == i ? 'active' : '' %>"
+        href="?page=<%= i %>"
+        ><%= i %></a
+      >
+      <% } %>
+    </p>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Propinsi</th>
+          <th>Kota</th>
+          <th>Kecamatan</th>
+          <th>Desa</th>
+          <th>Nama TPS</th>
+          <th>Kode TPS</th>
+          <th>Suara Total</th>
+          <th>Suara Sah</th>
+          <th>Suara Tidak Sah</th>
+          <th>Paslon 1</th>
+          <th>Paslon 2</th>
+          <th>Paslon 3</th>
+          <th>Selisih Total Suara</th>
+          <th>Selisih Suara Sah</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% invalid.rows.forEach((el, i) => { %>
+        <tr>
+          <td><%= (page - 1) * 100 + i + 1 %></td>
+          <td><%= el.propinsi %></td>
+          <td><%= el.kota %></td>
+          <td><%= el.kecamatan %></td>
+          <td><%= el.desa %></td>
+          <td><%= el.nama %></td>
+          <td>
+            <a href="<%= el.url %>" target="_blank"><%= el.kode %></a>
+          </td>
+          <td><%= format(el.suara_total) %></td>
+          <td><%= format(el.suara_sah) %></td>
+          <td><%= format(el.suara_tidak_sah) %></td>
+          <td class="green"><%= el.vote ? format(el.vote['100025']) : '' %></td>
+          <td class="blue"><%= el.vote ? format(el.vote['100026']) : '' %></td>
+          <td class="red"><%= el.vote ? format(el.vote['100027']) : '' %></td>
+          <td><%= format(el.selisih) %></td>
+          <td>
+            <%= el.vote ? format(el.suara_sah - el.vote['100025'] -
+            el.vote['100026'] - el.vote['100027']) : '' %>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </body>
+</html>

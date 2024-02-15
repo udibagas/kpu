@@ -63,9 +63,8 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
-    static getInvalidData() {
-      return sequelize.query(
-        `
+    static async getInvalidData(page) {
+      let query = `
         SELECT
           r5.*,
           r4."nama" AS "desa",
@@ -79,11 +78,30 @@ module.exports = (sequelize, DataTypes) => {
         JOIN "Regions" r1 ON r1."kode" = LEFT(r5."kode", 2)
         WHERE 
           r5."tingkat" = 5
-          AND r5."suara_total" != r5."suara_sah" + r5."suara_tidak_sah"
+          AND (
+            r5."suara_total" != r5."suara_sah" + r5."suara_tidak_sah"
+            OR r5."suara_total" > 300
+            OR r5."suara_sah" > 300
+          )
         ORDER BY "propinsi", "kota", "kecamatan", "desa", "nama"
-        `,
-        { type: QueryTypes.SELECT, mapToModel: true, model: Region }
+        `;
+
+      const count = await sequelize.query(query, {
+        type: QueryTypes.SELECT,
+        mapToModel: true,
+        model: Region,
+      });
+
+      const rows = await sequelize.query(
+        `${query} LIMIT 100 OFFSET ${(page - 1) * 100}`,
+        {
+          type: QueryTypes.SELECT,
+          mapToModel: true,
+          model: Region,
+        }
       );
+
+      return { count: count.length, rows };
     }
   }
 

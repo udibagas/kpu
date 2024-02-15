@@ -2,7 +2,7 @@ const axios = require("axios");
 const { Region, Vote } = require("./models");
 const { Op } = require("sequelize");
 
-const getData = async (kode) => {
+const getData = async (kode, order = "ASC") => {
   const regions = await Region.findAll({
     where: {
       tingkat: 5,
@@ -11,6 +11,7 @@ const getData = async (kode) => {
       },
       vote: null,
     },
+    order: [["kode", order]],
   });
 
   for (let i = 0; i < regions.length; i++) {
@@ -70,7 +71,7 @@ const getData = async (kode) => {
       },
     });
     provinces.forEach((p) => {
-      getData(p.kode);
+      getData(p.kode, process.argv[2]);
     });
   } catch (error) {
     console.log(error.message);

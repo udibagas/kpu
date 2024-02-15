@@ -18,3 +18,21 @@
 td {
   border-bottom: 1px solid #ddd;
 }
+
+
+
+a.pagination {
+  padding: 4px;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  color: #333;
+}
+
+a.pagination.active {
+  color: white;
+  font-weight: bold;
+  background-color: blue
+}
+
+
